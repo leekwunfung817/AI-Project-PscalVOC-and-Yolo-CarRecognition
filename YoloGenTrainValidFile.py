@@ -1,19 +1,20 @@
 import os
 
-cur_path=os.getcwd()
-os.chdir('../')
-save_path=os.getcwd()+'/data/'
-os.chdir(cur_path)
+# save in parent folder of ./data
+save_path=os.getcwd()+'/'
+scan = save_path+"data/"
 
 def replace_last(source_string, replace_what, replace_with):
     head, _sep, tail = source_string.rpartition(replace_what)
     return head + replace_with + tail
 l = []
-for jpg in os.listdir("."):
+for jpg in os.listdir(scan):
     if not jpg.endswith(".jpg"):
     	continue
+    jpg=scan+jpg
     print('.jpg',jpg)
     txt=replace_last(jpg,".jpg",".txt")
+
     if not os.path.exists(txt):
     	print('annotation do not exist',txt)
     	continue

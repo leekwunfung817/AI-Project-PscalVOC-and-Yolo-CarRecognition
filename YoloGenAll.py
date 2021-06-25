@@ -1,8 +1,9 @@
 import os
+# save in parent folder of ./data
 
-cur_path=os.getcwd()+'/'
 l = []
-for jpg in os.listdir("."):
+scan = "data/"
+for jpg in os.listdir(scan):
     if not jpg.endswith(".jpg"):
     	continue
     l.append(jpg)
@@ -10,6 +11,6 @@ for jpg in os.listdir("."):
 train=open('jpg.list','w+')
 i=0
 for jpg in l:
-	train.write(cur_path+jpg+'\n')
+	train.write(os.getcwd()+'/'+jpg+'\n')
 train.close()
 
