@@ -26,9 +26,9 @@ valid=open('valid.txt','w+')
 i=0
 for jpg in l:
 	if i%50==0:
-		valid.write(save_path+jpg+'\n')
+		valid.write(jpg+'\n')
 	else:
-		train.write(save_path+jpg+'\n')
+		train.write(jpg+'\n')
 	i+=1
 train.close()
 valid.close()
