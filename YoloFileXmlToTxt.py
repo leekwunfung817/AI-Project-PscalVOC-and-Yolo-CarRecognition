@@ -3,12 +3,12 @@ import sys
 
 import xml.etree.ElementTree as Et
 
-def r_predefined_classes():
+def r_predefined_classes(dir_):
 	i = 0
 	count = 0
 	arr={}
-	for line in open('../data/predefined_classes.txt','r').readlines():
-		arr[line.strip()]=str(i)
+	for line in open(dir_+'/predefined_classes.txt','r').readlines():
+		arr[line.strip().upper()]=str(i)
 		i+=1
 	return arr
 
@@ -32,9 +32,10 @@ class VOC:
 			if level and (not elem.tail or not elem.tail.strip()):
 				elem.tail = i
 
-	def generate(self, data):
-		predefined_classes=r_predefined_classes()
-		print('r_predefined_classes:',r_predefined_classes)
+	def generate(self, data, dir_):
+		predefined_classes=r_predefined_classes(dir_)
+		print('predefined_classes:',predefined_classes)
+		# print('data:',data)
 		xml_list = {}
 		for key in data:
 			print('',key)
@@ -44,6 +45,8 @@ class VOC:
 			str_b = ''
 			for i in range(0, int(element["objects"]["num_obj"])):
 				name = element["objects"][str(i)]["name"]
+				name = name.replace('I','1')
+				name = name.upper()
 				str_b+=predefined_classes[name]+' '
 				obj_xmin = element["objects"][str(i)]["bndbox"]["xmin"]
 				obj_xmax = element["objects"][str(i)]["bndbox"]["xmax"]
@@ -99,9 +102,11 @@ class VOC:
 	def parse(path):
 		print('check point 1')
 		p = os.path.abspath(path)
+		print('Path:',p)
 		w = os.walk(p)
-		print(w)
 		paras = next(w)
+		print(w)
+		print(paras)
 		(dir_path, dir_names, filenames) = paras
 
 
@@ -170,11 +175,11 @@ class VOC:
 
 import json
 
-def convert(dir):
+def convert(dir_):
 	print('check point A')
 	print('check point A1')
 	voc = VOC()
-	(bool,context)=voc.parse(dir)
+	(bool,context)=voc.parse(dir_)
 
 	print('check point A2')
 	print('check point A3')
@@ -190,13 +195,13 @@ def convert(dir):
 	#		 print(context[file])
 	#	 break
 	print('check point B')
-	(bool,xml_list)=voc.generate(context)
+	(bool,xml_list)=voc.generate(context,dir_)
 
 	# print(xml_list)
 	for file in xml_list:
 		fp=file+'.txt'
-		if dir!='.':
-			fp=dir+fp
+		if dir_!='.':
+			fp=dir_+fp
 
 		fc=xml_list[file]
 		print('point e:',fp,fc)
@@ -209,3 +214,4 @@ def convert(dir):
 
 	pass
 convert(".")
+# convert("C:/Users/Ivan Lee/Documents/Software project/Machine learning/AI/CPOS/AI-TrainData-PscalVOC-and-Yolo-LicensePlate-CharactersRecognition/data.unrecognized.20211207.cut/")

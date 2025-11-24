@@ -7,6 +7,7 @@ for jpg in os.listdir(scan):
     if not jpg.endswith(".jpg"):
     	continue
     l.append(jpg)
+    print('Append JPG ',jpg)
 
 train=open('jpg.list','w+')
 i=0

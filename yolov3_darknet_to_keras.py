@@ -40,6 +40,7 @@ class WeightLoader(object):
 
 	def parser_buffer(self,shape,dtype='int32',buffer_size=None):
 		self.read_bytes += buffer_size
+		print('shape',shape,'buffer_size',buffer_size)
 		return np.ndarray(shape=shape,
 						  dtype=dtype,
 						  buffer=self.fhandle.read(buffer_size) )
@@ -76,6 +77,7 @@ class DarkNetParser(object):
 
 		block = {}
 		with open(cfg_path,'r', encoding='utf-8') as fr:
+			# print(fr)
 			for line in fr:
 				line = line.strip()
 				if '[' in line and ']' in line:		
@@ -287,12 +289,16 @@ if __name__ == '__main__':
 
 	weights_path=None
 	if len(args.weights_path)>5:
+		output_path=args.output_path
 		weights_path=args.weights_path
-	else:
-		for i, weights in enumerate(sort("backup")):
-			print('weights:',weights)
-			weights_path=weights
-	convert('model.cfg','backup/'+weights_path,weights_path+'.h5')
+		cfg_path=args.cfg_path
+		print(cfg_path,weights_path,output_path)
+		convert(cfg_path,weights_path,output_path)
+	# else:
+	# 	for i, weights in enumerate(sort("backup")):
+	# 		print('weights:',weights)
+	# 		weights_path=weights
+	# convert('model.cfg','backup/'+weights_path,weights_path+'.h5')
 	# convert('model.cfg','backup/'+weights_path,'model.h5')
 
 '''
